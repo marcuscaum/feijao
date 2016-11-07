@@ -1,0 +1,118 @@
+*:focus {
+  outline:none;
+}
+
+html, body {
+  display: block;
+  height: 100%;
+  background: rgba(20, 1, 17, 0.79);
+  overflow: hidden;
+}
+
+.container {
+  height: 100%;
+}
+
+header h1 {
+  font-size: 72px;
+  text-align: center;
+  color: white;
+  margin-top: 100px;
+}
+
+.logo {
+  color: #ad7;
+}
+
+#song-request {
+  width: 100%;
+  float:left;
+  margin-top: 100px;
+}
+
+#song-request form {
+  width: 70%;
+  margin: auto;
+}
+
+#song-request form input[type="text"] {
+  width: calc(80% - 20px);
+  padding: 11px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border: none;
+  font-size: 26px;
+  font-weight: 100;
+  float: left;
+  background: none;
+  border-bottom: 1px solid #334621
+}
+
+#song-request form input[type="submit"] {
+  width: calc(20% - 20px);
+  padding: 12px;
+  margin-top: 15px;
+  float: left;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  background: #ad7;
+  color: #334621;
+  font-weight: bold;
+  text-transform: uppercase;
+  border:none;
+}
+
+#song-list {
+  width: 25%;
+  float: left;
+  border-radius:10px;
+  margin-right: 5%;
+}
+
+#song-list ul {
+  padding: 0;
+  margin:0;
+}
+
+#song-list li {
+  list-style-type: none;
+  padding: 10px;
+  border-bottom: 2px solid #140111;
+  color: white;
+  font-weight: 100;
+  font-size: 15px;
+}
+
+#song-list li:last-child {
+  border-bottom: none;
+}
+
+#player {
+  display: inline-block; /* let it be styled thusly */
+  padding: 0;            /* get rid of pre-styling */
+  margin: 0;
+  width: 100%;           /* take up full width available */
+  padding-top: 56.25%;   /* give aspect ratio of 16:9; "720 / 1280 = 0.5625" */
+  height: 0px;           /* don't want it to expand beyond padding */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#player iframe {
+  position: absolute;    /* expand to fill */
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+#current-song {
+  width: 100%;
+  float: left;
+  margin-top: 50px;
+  text-align: center;
+  color:white;
+}
