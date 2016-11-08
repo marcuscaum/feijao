@@ -15,7 +15,8 @@ class Player extends Component {
     loaded: 0,
     duration: 0,
     start: 0,
-    songNames: [],
+    songs_urls: [],
+    finished: false
   }
 
   constructor() {
@@ -32,19 +33,22 @@ class Player extends Component {
     return Math.floor(this.state.duration * state.played);
   }
 
-  defineSongs() {
+  defineSongsUrls() {
     let songs = [];
     for(let song in this.state.songs) {
       songs.push(this.state.songs[song].url);
     }
-    this.setState({song_names: songs});
+
+    return songs;
   }
 
   componentWillMount() {
+    this.state.finished = false;
+
     this.firebaseRef.on('value', (snapshot) => {
       this.setState({songs: snapshot.val().songs });
       this.setState({current_song: snapshot.val().current_song});
-      this.defineSongs();
+      this.setState({songs_urls: snapshot.val().songs_urls || this.defineSongsUrls()});
     })
 
     this.firebaseRef.once('value')
@@ -54,16 +58,18 @@ class Player extends Component {
   }
 
   onProgress = state => {
+    if (this.state.finished) { return }
     state.played = this.setToSeconds(state);
     this.updateDatabase(state);
   }
 
   nextSong() {
-    let currentItemIndex = _.findIndex(this.state.songs, (item) => {
+    let currentItemIndex = _.findIndex(this.state.songs_urls, (item) => {
       return item === this.state.current_song
     })
-    this.state.current_song = this.state.song_names[currentItemIndex+1];
+    this.state.current_song = this.state.songs_urls[currentItemIndex+1];
     this.state.played = 0;
+    this.state.finished = true;
     this.updateDatabase(this.state);
     this.forceUpdate();
   }
@@ -79,7 +85,6 @@ class Player extends Component {
            onProgress={this.onProgress}
            onDuration={duration => this.setState({ duration })}
            onEnded={this.nextSong.bind(this)}
-           ref={player => { this.player = player }}
            youtubeConfig={{
              playerVars: {
                allowFullscreen: 1,
