@@ -26,6 +26,9 @@ class App extends Component {
           <Player />
           <SongRequest />
         </div>
+        <footer>
+          Made with <span  className="glyphicon glyphicon-heart"></span> using ember<strong> #sqn </strong>
+        </footer>
       </div>
     );
   }

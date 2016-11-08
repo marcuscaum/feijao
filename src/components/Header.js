@@ -20,14 +20,13 @@ class Header extends Component {
     this.firebaseRef.on('value', (snapshot) => {
       this.setState({quotes: _.compact(snapshot.val())})
       this.setState({header_title: _.sample(this.state.quotes)})
-      this.setRandomTitle();
     })
   }
 
   setRandomTitle() {
     setInterval(() => {
       this.setState({header_title: _.sample(this.state.quotes)})
-    }, 5000);
+    }, 10000);
   }
 
   render() {
