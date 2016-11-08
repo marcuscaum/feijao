@@ -8,6 +8,8 @@ class Player extends Component {
 
   state = {
     current_song: null,
+    current_song_title: null,
+    current_song_url: null,
     title: null,
     playing: true,
     volume: 0.8,
@@ -15,7 +17,7 @@ class Player extends Component {
     loaded: 0,
     duration: 0,
     start: 0,
-    songs_urls: [],
+    songs_list: [],
   }
 
   constructor() {
@@ -35,7 +37,7 @@ class Player extends Component {
   defineSongsUrls() {
     let songs = [];
     for(let song in this.state.songs) {
-      songs.push(this.state.songs[song].url);
+      songs.push(this.state.songs[song]);
     }
 
     return songs;
@@ -47,7 +49,9 @@ class Player extends Component {
     this.firebaseRef.on('value', (snapshot) => {
       this.setState({songs: snapshot.val().songs });
       this.setState({current_song: snapshot.val().current_song});
-      this.setState({songs_urls: this.defineSongsUrls()});
+      this.setState({current_song_title: snapshot.val().current_song_title});
+      this.setState({current_song_url: snapshot.val().current_song_url});
+      this.setState({songs_list: this.defineSongsUrls()});
     })
 
     this.firebaseRef.once('value')
@@ -62,10 +66,13 @@ class Player extends Component {
   }
 
   nextSong() {
-    let currentItemIndex = _.findIndex(this.state.songs_urls, (item) => {
-      return item === this.state.current_song
+    let currentItemIndex = _.findIndex(this.state.songs_list, (item) => {
+      return item.url === this.state.current_song_url
     })
-    this.state.current_song = this.state.songs_urls[currentItemIndex+1];
+
+    this.state.current_song = this.state.songs_list[currentItemIndex+1];
+    this.state.current_song_url = this.state.current_song.url;
+    this.state.current_song_title = this.state.current_song.title;
     this.state.played = 0;
     this.state.start = 0;
     this.updateDatabase(this.state);
@@ -77,7 +84,7 @@ class Player extends Component {
       <div>
         <div id="player">
           <ReactPlayer
-           url={`${this.state.current_song}?start=${this.state.start}`}
+           url={`${this.state.current_song_url}?start=${this.state.start}`}
            playing
            progressFrequency={1}
            onProgress={this.onProgress}
@@ -94,10 +101,12 @@ class Player extends Component {
              }
            }}/>
         </div>
-        <div id="current-song">
-          <p>Jamming right now:</p>
-          <h4>{this.state.title}</h4>
-        </div>
+        {this.state.current_song_title && this.state.current_song_title.length > 0 &&
+          <div id="current-song">
+            <p>Jamming right now:</p>
+            <h4>{this.state.current_song_title}</h4>
+          </div>
+        }
         <SongRequest />
         <button onClick={this.nextSong.bind(this)}> Next Song</button>
       </div>
