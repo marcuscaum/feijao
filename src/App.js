@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Firebase from 'firebase';
 import Player from './components/Player';
 import SongRequest from './components/SongRequest';
+import Header from './components/Header';
 
 import './Main.css';
 
@@ -21,9 +22,7 @@ class App extends Component {
     return (
       <div>
         <div className="container">
-          <header>
-            <h1> Hello, this is <span className="logo">myjam</span>!</h1>
-          </header>
+          <Header />
           <Player />
           <SongRequest />
         </div>

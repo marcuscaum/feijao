@@ -44,7 +44,7 @@ class SongRequest extends Component {
             <input type="text" name="title" placeholder="Título do som" onChange={ this.onChange } value={ this.state.title } />
             <br></br>
             <input type="text" name="url" placeholder="URL do vídeo" onChange={ this.onChange } value={ this.state.url } />
-            <input type="submit" value="Add song" />
+            <input type="submit" value="Manda o sampley " />
           </form>
         </div>
       </div>
