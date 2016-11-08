@@ -16,7 +16,6 @@ class Player extends Component {
     duration: 0,
     start: 0,
     songs_urls: [],
-    finished: false
   }
 
   constructor() {
@@ -48,7 +47,7 @@ class Player extends Component {
     this.firebaseRef.on('value', (snapshot) => {
       this.setState({songs: snapshot.val().songs });
       this.setState({current_song: snapshot.val().current_song});
-      this.setState({songs_urls: snapshot.val().songs_urls || this.defineSongsUrls()});
+      this.setState({songs_urls: this.defineSongsUrls()});
     })
 
     this.firebaseRef.once('value')
@@ -58,7 +57,6 @@ class Player extends Component {
   }
 
   onProgress = state => {
-    if (this.state.finished) { return }
     state.played = this.setToSeconds(state);
     this.updateDatabase(state);
   }
@@ -69,7 +67,7 @@ class Player extends Component {
     })
     this.state.current_song = this.state.songs_urls[currentItemIndex+1];
     this.state.played = 0;
-    this.state.finished = true;
+    this.state.start = 0;
     this.updateDatabase(this.state);
     this.forceUpdate();
   }
