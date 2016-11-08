@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import Firebase from 'firebase';
+import _ from 'lodash';
 import ReactPlayer from 'react-player';
+import SongRequest from './SongRequest';
 
 class Player extends Component {
 
   state = {
-    url: null,
+    current_song: null,
+    title: null,
     playing: true,
     volume: 0.8,
     played: 0,
     loaded: 0,
     duration: 0,
-    start: 0
+    start: 0,
+    songNames: [],
   }
 
   constructor() {
@@ -28,18 +32,40 @@ class Player extends Component {
     return Math.floor(this.state.duration * state.played);
   }
 
+  defineSongs() {
+    let songs = [];
+    for(let song in this.state.songs) {
+      songs.push(this.state.songs[song].url);
+    }
+    this.setState({song_names: songs});
+  }
+
   componentWillMount() {
+    this.firebaseRef.on('value', (snapshot) => {
+      this.setState({songs: snapshot.val().songs });
+      this.setState({current_song: snapshot.val().current_song});
+      this.defineSongs();
+    })
+
     this.firebaseRef.once('value')
       .then((snapshot) => {
-        this.state.start = snapshot.val().played;
+        this.setState({start: snapshot.val().played});
       })
   }
 
   onProgress = state => {
     state.played = this.setToSeconds(state);
-    this.setState(Object.assign(this.state, state));
-    console.log(this.state)
     this.updateDatabase(state);
+  }
+
+  nextSong() {
+    let currentItemIndex = _.findIndex(this.state.songs, (item) => {
+      return item === this.state.current_song
+    })
+    this.state.current_song = this.state.song_names[currentItemIndex+1];
+    this.state.played = 0;
+    this.updateDatabase(this.state);
+    this.forceUpdate();
   }
 
   render() {
@@ -47,15 +73,15 @@ class Player extends Component {
       <div>
         <div id="player">
           <ReactPlayer
-           url={`http://www.youtube.com/watch?v=TTAU7lLDZYU?start=${this.state.start}`}
+           url={`${this.state.current_song}?start=${this.state.start}`}
            playing
            progressFrequency={1}
            onProgress={this.onProgress}
            onDuration={duration => this.setState({ duration })}
+           onEnded={this.nextSong.bind(this)}
            ref={player => { this.player = player }}
            youtubeConfig={{
              playerVars: {
-               start: this.state.played,
                allowFullscreen: 1,
                frameBorder: 0,
                controls: 0,
@@ -67,8 +93,10 @@ class Player extends Component {
         </div>
         <div id="current-song">
           <p>Jamming right now:</p>
-          <h4> dasSDwqe - PLoeqwlm</h4>
+          <h4>{this.state.title}</h4>
         </div>
+        <SongRequest />
+        <button onClick={this.nextSong.bind(this)}> Next Song</button>
       </div>
     );
   }
