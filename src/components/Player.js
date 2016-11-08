@@ -66,12 +66,10 @@ class Player extends Component {
     this.updateDatabase(state);
   }
 
-  nextSong() {
+  nextSong = () => {
     let currentItemIndex = _.findIndex(this.state.songs_list, (item) => {
       return item.id === this.state.current_song_id
     })
-
-    debugger
 
     this.state.current_song = this.state.songs_list[currentItemIndex+1];
     this.state.current_song_url = this.state.current_song.url;
