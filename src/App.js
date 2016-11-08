@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Firebase from 'firebase';
 import Player from './components/Player';
+import SongRequest from './components/SongRequest';
+
 import './Main.css';
 
 const firebaseConfig = {
@@ -23,6 +25,7 @@ class App extends Component {
             <h1> Hello, this is <span className="logo">myjam</span>!</h1>
           </header>
           <Player />
+          <SongRequest />
         </div>
       </div>
     );

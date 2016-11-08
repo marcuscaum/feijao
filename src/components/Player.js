@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Firebase from 'firebase';
 import _ from 'lodash';
 import ReactPlayer from 'react-player';
-import SongRequest from './SongRequest';
 
 class Player extends Component {
 
@@ -107,7 +106,6 @@ class Player extends Component {
             <h4>{this.state.current_song_title}</h4>
           </div>
         }
-        <SongRequest />
         <button onClick={this.nextSong.bind(this)}> Next Song</button>
       </div>
     );
