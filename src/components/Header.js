@@ -18,9 +18,9 @@ class Header extends Component {
 
   componentWillMount() {
     this.firebaseRef.on('value', (snapshot) => {
-      this.setState({quotes: snapshot.val()})
+      this.setState({quotes: _.compact(snapshot.val())})
       this.setState({header_title: _.sample(this.state.quotes)})
-      this.defineRandomQuote();
+      this.setRandomTitle();
     })
   }
 

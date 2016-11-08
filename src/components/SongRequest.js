@@ -4,8 +4,9 @@ import React, { Component } from 'react';
 class SongRequest extends Component {
 
   state = {
-    title: '',
-    url: ''
+    title: null,
+    url: null,
+    id: null,
   }
 
   constructor() {
@@ -27,6 +28,7 @@ class SongRequest extends Component {
   saveRequest() {
     const songsRef = this.firebaseRef.child('songs');
     const newSongRef = songsRef.push();
+    this.state.id = Math.random();
 
     newSongRef.set(this.state, console.log('done!'));
   }
@@ -42,7 +44,6 @@ class SongRequest extends Component {
         <div id="song-request">
           <form onSubmit={ this.handleSubmit }>
             <input type="text" name="title" placeholder="Título do som" onChange={ this.onChange } value={ this.state.title } />
-            <br></br>
             <input type="text" name="url" placeholder="URL do vídeo" onChange={ this.onChange } value={ this.state.url } />
             <input type="submit" value="Manda o sampley " />
           </form>
