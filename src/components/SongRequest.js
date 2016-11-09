@@ -1,5 +1,8 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
+import Alert from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 class SongRequest extends Component {
 
@@ -30,12 +33,34 @@ class SongRequest extends Component {
     const newSongRef = songsRef.push();
     this.state.id = Math.random();
 
-    newSongRef.set(this.state, console.log('done!'));
+    if (this.state.url === null || "") return this.emptyFieldFeedback();
+
+    newSongRef.set(this.state, () => {
+      this.setState({url: ""});
+      this.setState({title: ""});
+      this.addedNewSongFeedback();
+    });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.saveRequest();
+  }
+
+  emptyFieldFeedback() {
+    Alert.error('Campo URL é necessário!', {
+      position: 'top-right',
+      effect: 'slide',
+      beep: false,
+    });
+  }
+
+  addedNewSongFeedback() {
+    Alert.success('Música adicionada!', {
+      position: 'top-right',
+      effect: 'slide',
+      beep: false,
+    });
   }
 
   render() {
@@ -48,6 +73,7 @@ class SongRequest extends Component {
             <input type="submit" value="Manda o sampley " />
           </form>
         </div>
+        <Alert stack={{limit: 3}} />
       </div>
     );
   }

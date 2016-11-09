@@ -10,7 +10,8 @@
     "lodash": "^4.16.6",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-player": "^0.12.0"
+    "react-player": "^0.12.0",
+    "react-s-alert": "^1.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

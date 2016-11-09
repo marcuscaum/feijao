@@ -81,6 +81,7 @@ class Player extends Component {
     this.forceUpdate();
   }
 
+
   render() {
     return (
       <div>
