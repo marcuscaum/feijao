@@ -1,6 +1,8 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
 import Alert from 'react-s-alert';
+import Modal from 'boron/WaveModal';
+
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
@@ -29,17 +31,34 @@ class SongRequest extends Component {
   }
 
   saveRequest() {
-    const songsRef = this.firebaseRef.child('songs');
-    const newSongRef = songsRef.push();
-    this.state.id = Math.random();
 
-    if (this.state.url === (null || "")) return this.emptyFieldFeedback();
+    try {
+      if (!this.state.url.length && !this.refs.url.value.length) throw new Error();
 
-    newSongRef.set(this.state, () => {
-      this.setState({url: ""});
-      this.setState({title: ""});
-      this.addedNewSongFeedback();
-    });
+      const songsRef = this.firebaseRef.child('songs');
+      const newSongRef = songsRef.push();
+      this.state.id = Math.random();
+
+      newSongRef.set(this.state, () => {
+        this.setState({url: ""});
+        this.setState({title: ""});
+        this.addedNewSongFeedback();
+      });
+    } catch (e) {
+      this.emptyFieldFeedback()
+    }
+  }
+
+  showModal = () => {
+    this.refs.modal.show();
+  }
+
+  hideModal = () => {
+      this.refs.modal.hide();
+  }
+
+  callback = (e) => {
+      console.log(event);
   }
 
   handleSubmit = (e) => {
@@ -67,11 +86,15 @@ class SongRequest extends Component {
     return (
       <div>
         <div id="song-request">
-          <form onSubmit={ this.handleSubmit }>
-            <input type="text" name="title" placeholder="Título do som" onChange={ this.onChange } value={ this.state.title } />
-            <input type="text" name="url" placeholder="URL do vídeo" onChange={ this.onChange } value={ this.state.url } />
-            <input type="submit" value="Manda o sampley " />
-          </form>
+          <span className="glyphicon glyphicon-plus" onClick={this.showModal}></span>
+          <Modal ref="modal" keyboard={this.callback} className="song-request--modal">
+            <span className="glyphicon glyphicon-remove" onClick={this.hideModal}></span>
+            <form onSubmit={ this.handleSubmit }>
+              <input type="text" name="title" placeholder="Título do som" ref="title"  onChange={ this.onChange } value={ this.state.title } />
+              <input type="text" name="url" placeholder="URL do vídeo" ref="url" onChange={ this.onChange } value={ this.state.url } />
+              <input type="submit" value="Manda o sampley " />
+            </form>
+          </Modal>
         </div>
         <Alert stack={{limit: 3}} />
       </div>

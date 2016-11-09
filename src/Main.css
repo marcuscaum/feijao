@@ -41,24 +41,61 @@ header h1 {
 
 #song-request form {
   width: 100%;
+  display: inline-block;
+}
+
+#song-request .glyphicon-plus::before {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+}
+
+#song-request .glyphicon-plus {
+  padding: 25px;
+  border-radius: 100%;
+  float: right;
+  border: 2px solid teal;
+  font-size: 30px;
+  color: teal;
+  margin-top: 80px;
+  transition: 0.2s ease all;
+}
+
+#song-request .glyphicon-plus:hover {
+  background: teal;
+  color: white;
+  border-color: white;
+  cursor: pointer;
+}
+
+
+.song-request--modal div {
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 0;
+}
+
+.song-request--modal .glyphicon-remove {
+  right: 15px;
+  position: absolute;
+  top: 15px;
+  color: teal
 }
 
 #song-request form input[type="text"] {
-  width: calc(100% - 20px);
+  width:100%;
   padding: 11px;
-  border-bottom-left-radius: 5px;
-  border-top-left-radius: 5px;
   border: none;
   font-size: 15px;
   font-weight: 100;
   float: left;
   background: none;
   color: teal;
-  border-bottom: 1px solid teal
+  border-bottom: 1px solid #cacaca;
 }
 
 #song-request form input[type="submit"] {
-  width: calc(100% - 20px);
+  width:100%;
   padding: 12px;
   margin-top: 15px;
   float: left;
@@ -133,4 +170,8 @@ header h1 {
 #current-song h4 {
   font-size: 49px;
   color: teal;
+}
+
+.s-alert-box {
+  z-index: 10000;
 }
