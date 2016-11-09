@@ -24,6 +24,7 @@ class Player extends Component {
     super();
 
     this.firebaseRef = Firebase.database().ref('playlist/');
+    window.nextSong = this.nextSong;
   }
 
   updateDatabase = state => {
@@ -122,7 +123,6 @@ class Player extends Component {
             <h4>{this.state.current_song_title}</h4>
           </div>
         }
-        <button onClick={this.nextSong.bind(this)}> Next Song</button>
       </div>
     );
   }
