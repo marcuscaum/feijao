@@ -72,6 +72,11 @@ class Player extends Component {
     })
 
     this.state.current_song = this.state.songs_list[currentItemIndex+1];
+
+    if (this.state.current_song === undefined) {
+      this.resetPlaylist(currentItemIndex);
+    }
+
     this.state.current_song_url = this.state.current_song.url;
     this.state.current_song_title = this.state.current_song.title;
     this.state.current_song_id = this.state.current_song.id;
@@ -81,6 +86,13 @@ class Player extends Component {
     this.forceUpdate();
   }
 
+  resetPlaylist(currentItemIndex) {
+    let indexLength = this.state.songs_list.length - 1;
+
+    if (currentItemIndex === indexLength) {
+      this.state.current_song = this.state.songs_list[0];
+    }
+  }
 
   render() {
     return (
