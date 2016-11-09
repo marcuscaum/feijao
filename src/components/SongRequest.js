@@ -32,8 +32,9 @@ class SongRequest extends Component {
     const songsRef = this.firebaseRef.child('songs');
     const newSongRef = songsRef.push();
     this.state.id = Math.random();
+    debugger
 
-    if (this.state.url === null || "") return this.emptyFieldFeedback();
+    if (this.state.url === (null || "")) return this.emptyFieldFeedback();
 
     newSongRef.set(this.state, () => {
       this.setState({url: ""});
